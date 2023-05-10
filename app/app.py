@@ -8,6 +8,7 @@
 # =[Modules dan Packages]========================
 
 from flask import Flask, render_template, request, jsonify
+from flask_ngrok import run_with_ngrok  #Komentari code ini jika run di local host
 from werkzeug.utils import secure_filename
 import pandas as pd
 import numpy as np
@@ -81,7 +82,7 @@ def apiDeteksi():
             test_image_x = np.array([image_array])
 
             # Prediksi Gambar
-            y_pred_test_single = model.predict_proba(test_image_x)
+            y_pred_test_single = model.predict(test_image_x)
             y_pred_test_classes_single = np.argmax(y_pred_test_single, axis=1)
 
             hasil_prediksi = cifar10_classes[y_pred_test_classes_single[0]]
@@ -101,7 +102,9 @@ def apiDeteksi():
 
 # =[Main]========================================
 
+"""
 
+#Run in local host
 if __name__ == '__main__':
 
     # Load model yang telah ditraining
@@ -109,4 +112,19 @@ if __name__ == '__main__':
     model.load_weights("model_cifar10_cnn_tf.h5")
 
     # Run Flask di localhost
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True
+ 
+ """
+
+#Run With ngrok
+if __name__ == '__main__':
+    run_with_ngrok(app)
+    app.run()
+
+
+
+
+
+
+
+
